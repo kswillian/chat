@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "42355858833",
+    "firebase_url": "https://chat-54d32.firebaseio.com",
+    "project_id": "chat-54d32",
+    "storage_bucket": "chat-54d32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42355858833:android:76810e94c6dc7179e50e30",
+        "android_client_info": {
+          "package_name": "santos.williankaminski.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42355858833-06tmsi0bpaamqejir49qsqokig135i16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "santos.williankaminski.chat",
+            "certificate_hash": "24b2ef22ff76689c489a87dac137c3b49ec360c6"
+          }
+        },
+        {
+          "client_id": "42355858833-ctimhrrvqs7rhc8huqvhqs1omgdh06cj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJdSIO7VwYU9nXIkQCMVGxf_2V_fAyuaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42355858833-ctimhrrvqs7rhc8huqvhqs1omgdh06cj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
