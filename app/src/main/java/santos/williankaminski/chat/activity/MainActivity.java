@@ -1,6 +1,7 @@
 package santos.williankaminski.chat.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
@@ -13,9 +14,23 @@ import santos.williankaminski.chat.R;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initComponents();
+        confgToolbar();
+
+    }
+
+    public void initComponents(){
+        toolbar = findViewById(R.id.toolbarPrincipal);
+    }
+
+    public void confgToolbar(){
+        toolbar.setTitle("Firebase Chat");
+        setSupportActionBar(toolbar);
     }
 }
