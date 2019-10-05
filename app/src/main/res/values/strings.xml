@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Chat</string>
 
+    <!-- Title Activity's -->
+    <string name="toolbar_main">Chat</string>
+    <string name="toolbar_confg">Configurações</string>
+
     <!-- Firebase Exceptions -->
     <string name="firebaseAuthWeakPasswordException">Digite uma senha mais forte</string>
     <string name="firebaseAuthInvalidCredentialsException">Por favor, digite um e-mail válido</string>
@@ -21,6 +25,10 @@
     <string name="cadastro_cadastrar">Cadastrar</string>
 
     <!-- Activity Main -->
+
+    <!-- Activity Consfiguracoes -->
+    <string name="config_aviso">Esse não é o seu nome de usuário nem sua senha. Esse nome ficará visível para seus contatos nesta Aplicação.</string>
+    <string name="config_nome_user">Nome do usuário</string>
 
     <!-- Activity Main Menu -->
     <string name="menu_pesquisar">Pesquisar</string>

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void confgToolbar(){
-        toolbar.setTitle("Firebase Chat");
+        toolbar.setTitle(getResources().getString(R.string.toolbar_main));
         setSupportActionBar(toolbar);
     }
 
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.menuConfig:
+                startActivity(new Intent(this, ConfiguracoesActivity.class));
                 break;
             case R.id.menuSair:
                 signOut();
