@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Chat</string>
+
+    <!-- Activity Login -->
+    <string name="login_email">Digite seu email</string>
+    <string name="login_senha">Digite sua senha</string>
+    <string name="login_login">Acessar</string>
+    <string name="login_cadastrar">Cadastre-se</string>
+
+    <!-- Activity Cadastro -->
+    <string name="cadastro_email">Digite seu email</string>
+    <string name="cadastro_senha">Digite sua senha</string>
+    <string name="cadastro_nome">Digite seu nome</string>
+    <string name="cadastro_cadastrar">Cadastrar</string>
+
 </resources>

@@ -7,57 +7,57 @@
     tools:context=".activity.LoginActivity">
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editTextLoginSenha"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="44dp"
         android:layout_marginRight="20dp"
         android:ems="10"
-        android:hint="Digite sua senha"
-        android:inputType="textPersonName"
+        android:hint="@string/login_senha"
+        android:inputType="text|textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextLoginEmail" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextLoginEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="148dp"
         android:layout_marginRight="20dp"
         android:ems="10"
-        android:hint="Digite seu email"
-        android:inputType="textPersonName"
+        android:hint="@string/login_email"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewLoginCadastrar"
         android:layout_width="0dp"
         android:layout_height="16dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="Crie uma conta hoje"
+        android:text="@string/login_cadastrar"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginCadastrar"
         app:layout_constraintVertical_bias="0.131" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonLoginCadastrar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="36dp"
         android:layout_marginRight="20dp"
-        android:text="Acessar"
+        android:text="@string/login_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextLoginSenha" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
