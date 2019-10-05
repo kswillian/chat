@@ -20,9 +20,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import santos.williankaminski.chat.R;
+import santos.williankaminski.chat.config.FirebaseConf;
 import santos.williankaminski.chat.model.Permission;
+import santos.williankaminski.chat.util.UserFirebase;
 
 /**
  * @author Willian Kaminski dos santos
@@ -35,6 +46,9 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private ImageButton imageButtonCamera;
     private ImageButton imageButtonGalery;
     private CircleImageView circleImageViewFotoPerfil;
+
+    private StorageReference storageReference;
+    private String userId;
 
     private static final int CAMERA = 100;
     private static final int GALLERY = 200;
@@ -51,6 +65,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         initComponents();
         confgToolbar();
+        firedaseUseData();
 
         // Validar as permissões
         Permission.validatePermission(permissions, this, 1);
@@ -79,10 +94,40 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 }
 
                 if(image != null){
+
                     circleImageViewFotoPerfil.setImageBitmap(image);
-                    Toast.makeText(this, ".", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(this, "...", Toast.LENGTH_SHORT).show();
+
+                    // Recuperar dados da imagem para o Firebase
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+                    byte[] dataImage = byteArrayOutputStream.toByteArray();
+
+                    // Salvar imagem no Firebase
+                    StorageReference imageRef = storageReference
+                            .child("imagens")
+                            .child("perfil")
+                            .child(userId)
+                            .child("perfil.jpeg");
+
+                    UploadTask uploadTask = imageRef.putBytes(dataImage);
+
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    getResources().getString(R.string.upload_image_error),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    getResources().getString(R.string.upload_image_sucess),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
             }catch (Exception e){
@@ -160,5 +205,10 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void firedaseUseData(){
+        storageReference = FirebaseConf.getFirebaseStorage();
+        userId = UserFirebase.getUserId();
     }
 }

@@ -17,6 +17,9 @@
     <string name="exception_autenticacao">Erro ao realizar a autenticação!</string>
     <string name="exception_cadastrar">Erro ao cadastrar usuário</string>
 
+    <string name="upload_image_error">Erro ao fazer o upload da imagem.</string>
+    <string name="upload_image_sucess">Sucesso ao fazer o upload da imagem.</string>
+
     <!-- Activity Login -->
     <string name="login_email">Digite seu email</string>
     <string name="login_senha">Digite sua senha</string>
