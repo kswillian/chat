@@ -109,7 +109,9 @@ public class CadastroActivity extends AppCompatActivity {
                     finish();
 
                 }else{
-                        String msg = "";
+
+                    String msg = "";
+
                     try {
                         throw task.getException();
                     }catch (FirebaseAuthWeakPasswordException e){
