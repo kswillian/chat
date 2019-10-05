@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Chat</string>
 
+    <!-- Firebase Exceptions -->
+    <string name="firebaseAuthWeakPasswordException">Digite uma senha mais forte</string>
+    <string name="firebaseAuthInvalidCredentialsException">Por favor, digite um e-mail válido</string>
+    <string name="firebaseAuthUserCollisionException">Esta conta já foi cadastrada</string>
+    <string name="exception_autenticacao">Erro ao realizar a autenticação!</string>
+    <string name="exception_cadastrar">Erro ao cadastrar usuário</string>
+
     <!-- Activity Login -->
     <string name="login_email">Digite seu email</string>
     <string name="login_senha">Digite sua senha</string>
@@ -12,5 +19,16 @@
     <string name="cadastro_senha">Digite sua senha</string>
     <string name="cadastro_nome">Digite seu nome</string>
     <string name="cadastro_cadastrar">Cadastrar</string>
+
+    <!-- Activity Main -->
+
+    <!-- Activity Main Menu -->
+    <string name="menu_pesquisar">Pesquisar</string>
+    <string name="menu_configuracoes">Configurações</string>
+    <string name="menu_sair">Sair</string>
+
+    <!-- Fragments -->
+    <string name="fragment_conversas">Conversas</string>
+    <string name="fragment_contatos">Contatos</string>
 
 </resources>

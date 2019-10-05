@@ -143,13 +143,13 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         throw task.getException();
                     }catch (FirebaseAuthWeakPasswordException e){
-                        msg = "Digite uma senha mais forte";
+                        msg = getResources().getString(R.string.firebaseAuthWeakPasswordException);
                     }catch (FirebaseAuthInvalidCredentialsException e){
-                        msg = "Por favor, digite uma e-mail válido";
+                        msg = getResources().getString(R.string.firebaseAuthInvalidCredentialsException);
                     }catch (FirebaseAuthUserCollisionException e) {
-                        msg = "Esta conta já foi cadastrada";
+                        msg = getResources().getString(R.string.firebaseAuthUserCollisionException);
                     }catch (Exception e) {
-                        msg = "Erro ao realizar a autenticação!";
+                        msg = getResources().getString(R.string.exception_autenticacao);
                         e.printStackTrace();
                     }
 

@@ -9,6 +9,6 @@
     </style>
 
     <!-- Base toolbar theme. -->
-    <style name="Toolbar" parent="Theme.AppCompat.Light.DarkActionBar"/>
+    <style name="Toolbar" parent="Theme.AppCompat.Light.NoActionBar"/>
 
 </resources>
