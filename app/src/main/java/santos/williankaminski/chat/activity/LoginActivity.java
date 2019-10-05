@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
 
 import santos.williankaminski.chat.R;
 import santos.williankaminski.chat.config.FirebaseConf;
@@ -45,6 +46,18 @@ public class LoginActivity extends AppCompatActivity {
 
         initComponents();
         events();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        auth = FirebaseConf.getFirebaseAuth();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+
+        if(firebaseUser != null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
     }
 
     public void initComponents(){
