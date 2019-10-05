@@ -5,6 +5,11 @@
     <string name="toolbar_main">Chat</string>
     <string name="toolbar_confg">Configurações</string>
 
+    <!-- Permission AlertDialog -->
+    <string name="permission_alert_title">Permissões Negadas</string>
+    <string name="permission_alert_message">Para utilizar o app é necessário aceitar as permissões</string>
+    <string name="permission_alert_confirm">Confirmar</string>
+
     <!-- Firebase Exceptions -->
     <string name="firebaseAuthWeakPasswordException">Digite uma senha mais forte</string>
     <string name="firebaseAuthInvalidCredentialsException">Por favor, digite um e-mail válido</string>
