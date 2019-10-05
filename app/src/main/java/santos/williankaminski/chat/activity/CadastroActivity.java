@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import santos.williankaminski.chat.R;
 import santos.williankaminski.chat.config.FirebaseConf;
 import santos.williankaminski.chat.model.User;
+import santos.williankaminski.chat.util.Base64Custom;
 
 /**
  * @author Willian Kaminski dos santos
@@ -89,7 +90,7 @@ public class CadastroActivity extends AppCompatActivity {
         }
     }
 
-    public void registerUser(User user){
+    public void registerUser(final User user){
 
         auth = FirebaseConf.getFirebaseAuth();
         auth.createUserWithEmailAndPassword(
@@ -107,6 +108,15 @@ public class CadastroActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                     finish();
+
+                    try{
+                        String idUser = Base64Custom.encodeBase64(user.getUserEmail());
+                        user.setId(idUser);
+                        user.registerData();
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
                 }else{
 

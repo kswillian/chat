@@ -1,5 +1,10 @@
 package santos.williankaminski.chat.model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+
+import santos.williankaminski.chat.config.FirebaseConf;
+
 /**
  * @author Willian Kaminski dos santos
  * @since 05-10-2019
@@ -7,12 +12,22 @@ package santos.williankaminski.chat.model;
  */
 public class User {
 
+    private String id;
     private String userName;
     private String userEmail;
     private String userPassword;
 
     public User() {
 
+    }
+
+    @Exclude
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserName() {
@@ -37,5 +52,13 @@ public class User {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public void registerData(){
+
+        DatabaseReference databaseReference = FirebaseConf.getFirenaseDatabase();
+        DatabaseReference user = databaseReference.child("users").child(getId());
+
+        user.setValue(this);
     }
 }
