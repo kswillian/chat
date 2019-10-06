@@ -68,7 +68,7 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
 
             Uri uri = Uri.parse(img);
             Glide.with(context).load(uri).into(holder.image);
-            holder.mensagemDate.setText(msgDt.substring(18, 24));
+            holder.mensagemDate.setText(msgDt.substring(18, 23));
             holder.mensagem.setVisibility(View.GONE);
 
         }else{ // retorno a mensagem e data

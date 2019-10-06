@@ -27,7 +27,6 @@ public class User implements Serializable{
 
     }
 
-    @Exclude
     public String getId() {
         return id;
     }

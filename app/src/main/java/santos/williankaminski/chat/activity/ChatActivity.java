@@ -8,8 +8,6 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
@@ -43,12 +41,11 @@ import santos.williankaminski.chat.R;
 import santos.williankaminski.chat.adapter.MensagensAdapter;
 import santos.williankaminski.chat.config.FirebaseConf;
 import santos.williankaminski.chat.model.Message;
+import santos.williankaminski.chat.model.Talk;
 import santos.williankaminski.chat.model.User;
 import santos.williankaminski.chat.util.Base64Custom;
 import santos.williankaminski.chat.util.DateTime;
 import santos.williankaminski.chat.util.UserFirebase;
-
-import static android.content.Intent.ACTION_PICK;
 
 /**
  * @author Willian Kaminski dos santos
@@ -283,6 +280,9 @@ public class ChatActivity extends AppCompatActivity {
                     //Salvando a mensagem para o destinatario
                     saveMessage(idUserAddress, idUserSender, message);
 
+                    //Salvando conversa
+                    saveTalk(message);
+
                 }else {
                     Toast.makeText(
                             getApplicationContext(),
@@ -315,6 +315,17 @@ public class ChatActivity extends AppCompatActivity {
         messageRef.child(sender).child(address).push().setValue(message);
 
         editTextMensagem.setText(null);
+    }
+
+    public void saveTalk(Message message){
+        Talk talk = new Talk();
+        talk.setIdSender(idUserSender);
+        talk.setIdAddress(idUserAddress);
+        talk.setLastMessage(message.getMessage());
+        talk.setUser(userAddress);
+        talk.setDataLastMessagem(DateTime.getTodayDateTime());
+        talk.save();
+
     }
 
     private void recoverMessage(){
@@ -350,6 +361,5 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void findImage(){
-
     }
 }
