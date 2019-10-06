@@ -1,6 +1,5 @@
 package santos.williankaminski.chat.model;
 
-import java.util.Date;
 
 /**
  * @author Willian Kaminski dos santos
