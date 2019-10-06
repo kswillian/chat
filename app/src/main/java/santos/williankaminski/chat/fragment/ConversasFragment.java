@@ -84,7 +84,6 @@ public class ConversasFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), ChatActivity.class);
                         intent.putExtra("chatContato", talk.getUser());
                         startActivity(intent);
-
                     }
 
                     @Override
