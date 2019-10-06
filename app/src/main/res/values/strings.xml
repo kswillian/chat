@@ -48,6 +48,9 @@
     <!-- Fragments -->
     <string name="fragment_conversas">Conversas</string>
     <string name="fragment_contatos">Contatos</string>
-    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_chat"></string>
+
+    <string name="msg_empty">Digite uma mensagem para ser enviada!</string>
+
 
 </resources>

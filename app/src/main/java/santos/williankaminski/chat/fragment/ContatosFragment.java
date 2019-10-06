@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import santos.williankaminski.chat.R;
@@ -53,7 +54,7 @@ public class ContatosFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_contatos, container, false);
@@ -77,7 +78,11 @@ public class ContatosFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+
+                        User userSelected = listContatos.get(position);
                         Intent intent = new Intent(getActivity(), ChatActivity.class);
+                        System.out.println(userSelected.toString());
+                        intent.putExtra("chatContato", userSelected);
                         startActivity(intent);
                     }
 

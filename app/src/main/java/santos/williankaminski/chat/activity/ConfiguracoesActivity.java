@@ -31,7 +31,7 @@ import java.io.ByteArrayOutputStream;
 import de.hdodenhof.circleimageview.CircleImageView;
 import santos.williankaminski.chat.R;
 import santos.williankaminski.chat.config.FirebaseConf;
-import santos.williankaminski.chat.model.Permission;
+import santos.williankaminski.chat.util.Permission;
 import santos.williankaminski.chat.model.User;
 import santos.williankaminski.chat.util.UserFirebase;
 

@@ -2,8 +2,8 @@ package santos.williankaminski.chat.model;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ import santos.williankaminski.chat.util.UserFirebase;
  * @since 05-10-2019
  * @version 0.0.1
  */
-public class User {
+public class User implements Serializable{
 
     private String id;
     private String userName;
@@ -100,5 +100,16 @@ public class User {
         //userMap.put("userPassword", getUserPassword());
 
         return userMap;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                ", userPhoto='" + userPhoto + '\'' +
+                '}';
     }
 }

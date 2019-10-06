@@ -1,4 +1,4 @@
-package santos.williankaminski.chat.model;
+package santos.williankaminski.chat.util;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
