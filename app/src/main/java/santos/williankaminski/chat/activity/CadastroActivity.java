@@ -21,6 +21,7 @@ import santos.williankaminski.chat.R;
 import santos.williankaminski.chat.config.FirebaseConf;
 import santos.williankaminski.chat.model.User;
 import santos.williankaminski.chat.util.Base64Custom;
+import santos.williankaminski.chat.util.UserFirebase;
 
 /**
  * @author Willian Kaminski dos santos
@@ -107,6 +108,8 @@ public class CadastroActivity extends AppCompatActivity {
                             "Usuário cadastrado com sucesso!",
                             Toast.LENGTH_SHORT
                     ).show();
+
+                    UserFirebase.uploadUserName(user.getUserName());
                     finish();
 
                     try{

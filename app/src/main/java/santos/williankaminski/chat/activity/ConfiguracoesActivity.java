@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,13 +15,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,6 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import santos.williankaminski.chat.R;
 import santos.williankaminski.chat.config.FirebaseConf;
 import santos.williankaminski.chat.model.Permission;
+import santos.williankaminski.chat.model.User;
 import santos.williankaminski.chat.util.UserFirebase;
 
 /**
@@ -45,10 +45,15 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageButton imageButtonCamera;
     private ImageButton imageButtonGalery;
+    private EditText editTextUserNome;
     private CircleImageView circleImageViewFotoPerfil;
+    private ImageView imageViewPerfilAtualizarNome;
 
     private StorageReference storageReference;
+    private FirebaseUser firebaseUser;
     private String userId;
+
+    private User usuario;
 
     private static final int CAMERA = 100;
     private static final int GALLERY = 200;
@@ -65,12 +70,23 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         initComponents();
         confgToolbar();
-        firedaseUseData();
+        firedaseUserData();
 
         // Validar as permissões
         Permission.validatePermission(permissions, this, 1);
 
+        usuario = UserFirebase.getUserLogin();
+
         buttonEvents();
+    }
+
+    public void initComponents(){
+        toolbar = findViewById(R.id.toolbarPrincipal);
+        imageButtonGalery = findViewById(R.id.imageButtonGalery);
+        imageButtonCamera = findViewById(R.id.imageButtonCamera);
+        circleImageViewFotoPerfil = findViewById(R.id.circleImageViewFotoPerfil);
+        editTextUserNome = findViewById(R.id.editTextPerfilNome);
+        imageViewPerfilAtualizarNome = findViewById(R.id.imageViewPerfilAtualizarNome);
     }
 
     @Override
@@ -103,13 +119,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                     byte[] dataImage = byteArrayOutputStream.toByteArray();
 
                     // Salvar imagem no Firebase
-                    StorageReference imageRef = storageReference
+                    final StorageReference imageRef = storageReference
                             .child("imagens")
                             .child("perfil")
                             .child(userId)
                             .child("perfil.jpeg");
 
-                    UploadTask uploadTask = imageRef.putBytes(dataImage);
+                    final UploadTask uploadTask = imageRef.putBytes(dataImage);
 
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -126,6 +142,9 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                                     getApplicationContext(),
                                     getResources().getString(R.string.upload_image_sucess),
                                     Toast.LENGTH_SHORT).show();
+
+                            Uri url = taskSnapshot.getUploadSessionUri();
+                            uploadUserPhoto(url);
                         }
                     });
                 }
@@ -163,13 +182,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    public void initComponents(){
-        toolbar = findViewById(R.id.toolbarPrincipal);
-        imageButtonGalery = findViewById(R.id.imageButtonGalery);
-        imageButtonCamera = findViewById(R.id.imageButtonCamera);
-        circleImageViewFotoPerfil = findViewById(R.id.circleImageViewFotoPerfil);
-    }
-
     public void confgToolbar(){
         toolbar.setTitle(getResources().getString(R.string.toolbar_confg));
         setSupportActionBar(toolbar);
@@ -187,8 +199,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 if(intent.resolveActivity(getPackageManager()) !=  null){
                     startActivityForResult(intent, CAMERA);
                 }
-
-
             }
         });
 
@@ -205,10 +215,50 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
             }
         });
+
+        imageViewPerfilAtualizarNome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean retorno = UserFirebase.uploadUserName(editTextUserNome.getText().toString());
+                if(retorno){
+
+                    usuario.setUserName(editTextUserNome.getText().toString());
+                    usuario.updateData();
+
+                    Toast.makeText(
+                            getApplicationContext(),
+                            getResources().getString(R.string.update_name_sucess),
+                            Toast.LENGTH_SHORT).show();
+
+
+                }
+            }
+        });
     }
 
-    public void firedaseUseData(){
+    public void uploadUserPhoto(Uri url){
+        UserFirebase.uploadUserPhoto(url);
+        usuario.setUserPhoto(url.toString());
+        usuario.updateData();
+    }
+
+    public void firedaseUserData(){
+
         storageReference = FirebaseConf.getFirebaseStorage();
         userId = UserFirebase.getUserId();
+
+        firebaseUser = UserFirebase.getUser();
+        Uri url = firebaseUser.getPhotoUrl();
+        String nome = firebaseUser.getDisplayName();
+
+        if(url != null){
+            System.out.println(url);
+            //Glide.with(this).load(url).into(circleImageViewFotoPerfil);
+            circleImageViewFotoPerfil.setImageResource(R.drawable.default_img);
+        }else{
+            circleImageViewFotoPerfil.setImageResource(R.drawable.default_img);
+        }
+
+        editTextUserNome.setText(nome);
     }
 }
