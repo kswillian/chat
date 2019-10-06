@@ -1,14 +1,23 @@
 package santos.williankaminski.chat.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,13 +26,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import santos.williankaminski.chat.R;
@@ -34,6 +47,8 @@ import santos.williankaminski.chat.model.User;
 import santos.williankaminski.chat.util.Base64Custom;
 import santos.williankaminski.chat.util.DateTime;
 import santos.williankaminski.chat.util.UserFirebase;
+
+import static android.content.Intent.ACTION_PICK;
 
 /**
  * @author Willian Kaminski dos santos
@@ -47,6 +62,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText editTextMensagem;
     private FloatingActionButton fabEnviar;
     private RecyclerView recyclerMensagens;
+    private ImageView imageViewCameraMensagem;
 
     private User userAddress;
     private MensagensAdapter adapter;
@@ -57,7 +73,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private DatabaseReference messageRef;
+    private StorageReference storageReference;
     private ChildEventListener childEventListenerMessages;
+
+    private static final int CAMERA = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +91,8 @@ public class ChatActivity extends AppCompatActivity {
         initRecyclerView();
 
         databaseReference = FirebaseConf.getFirenaseDatabase();
+        storageReference = FirebaseConf.getFirebaseStorage();
+
         messageRef = databaseReference
                 .child("messages")
                 .child(idUserSender)
@@ -93,12 +114,104 @@ public class ChatActivity extends AppCompatActivity {
         messageRef.removeEventListener(childEventListenerMessages);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK ){
+
+            Bitmap image = null;
+
+            try {
+
+                switch (requestCode){
+                    case CAMERA:
+                        image = (Bitmap) data.getExtras().get("data");
+                        break;
+                }
+
+                if(image != null){
+
+                    // Recuperar dados da imagem para o Firebase
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+                    byte[] dataImage = byteArrayOutputStream.toByteArray();
+
+                    // Nome imagem
+                    String imageName = UUID.randomUUID().toString();
+
+                    // Salvar imagem no Firebase
+                    final StorageReference imageRef = storageReference
+                            .child("imagens")
+                            .child("photo")
+                            .child(idUserSender)
+                            .child(userAddress.getUserName() + "_" + imageName + ".jpeg");
+
+                    UploadTask uploadTask = imageRef.putBytes(dataImage);
+
+                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            // Continua a tarefa para pegar a URL.
+                            return imageRef.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+
+                            if(task.isSuccessful()){
+
+                                Uri downloadUri = task.getResult();
+                                String downloadUrl = downloadUri.toString();
+
+                                Message message = new Message();
+                                message.setIdUser(idUserSender);
+                                message.setMessage("");
+                                message.setPhoto(downloadUrl);
+                                message.setDate(DateTime.getTodayDateTime());
+                                message.setStatus("new");
+
+                                // Salvar imagem para o referente
+                                saveMessage(idUserSender, idUserAddress, message);
+
+                                // Salvar imagem para o destinatario
+                                saveMessage(idUserAddress, idUserSender, message);
+
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        getResources().getString(R.string.upload_image_sucess),
+                                        Toast.LENGTH_SHORT).show();
+
+                            }else{
+
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        getResources().getString(R.string.upload_image_error),
+                                        Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void initComponents(){
         circleImageFotoChat = findViewById(R.id.circleImageFotoChat);
         textViewNomeChat = findViewById(R.id.textViewNomeChat);
         editTextMensagem = findViewById(R.id.editTextMensagem);
         fabEnviar = findViewById(R.id.fabEnviar);
         recyclerMensagens = findViewById(R.id.recyclerMensagens);
+        imageViewCameraMensagem = findViewById(R.id.imageViewCameraMensagem);
     }
 
     public void initToolBar(){
@@ -179,6 +292,19 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+
+        imageViewCameraMensagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findImage();
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                if(intent.resolveActivity(getPackageManager()) !=  null){
+                    startActivityForResult(intent, CAMERA);
+                }
+            }
+        });
     }
 
     public void saveMessage(String sender, String address, Message message){
@@ -221,5 +347,9 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void findImage(){
+
     }
 }

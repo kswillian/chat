@@ -20,8 +20,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -127,23 +131,21 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
                     final UploadTask uploadTask = imageRef.putBytes(dataImage);
 
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(
-                                    getApplicationContext(),
-                                    getResources().getString(R.string.upload_image_error),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(
-                                    getApplicationContext(),
-                                    getResources().getString(R.string.upload_image_sucess),
-                                    Toast.LENGTH_SHORT).show();
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
 
-                            Uri url = taskSnapshot.getUploadSessionUri();
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            // Continua a tarefa para pegar a URL.
+                            return imageRef.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+
+                            Uri url = task.getResult();
                             uploadUserPhoto(url);
                         }
                     });
@@ -253,8 +255,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         if(url != null){
             System.out.println(url);
-            //Glide.with(this).load(url).into(circleImageViewFotoPerfil);
-            circleImageViewFotoPerfil.setImageResource(R.drawable.default_img);
+            Glide.with(this).load(url).into(circleImageViewFotoPerfil);
         }else{
             circleImageViewFotoPerfil.setImageResource(R.drawable.default_img);
         }
