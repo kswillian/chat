@@ -145,14 +145,30 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
 
-                            Uri url = task.getResult();
-                            uploadUserPhoto(url);
+                            if(task.isSuccessful()){
+
+                                Uri url = task.getResult();
+                                uploadUserPhoto(url);
+
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        getResources().getString(R.string.upload_image_sucess),
+                                        Toast.LENGTH_SHORT).show();
+
+                            }else{
+
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        getResources().getString(R.string.upload_image_error),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                     });
                 }
 
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }
     }
