@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="5dp">
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingRight="8dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewPerfilContato"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/default_img" />
-
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
 
-        <TextView
-            android:id="@+id/textViewNomeContato"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/cadastro_nome"
-            android:textStyle="bold" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewPerfilContato"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/default_img" />
 
-        <TextView
-            android:id="@+id/textViewEmailContato"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/cadastro_email" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textViewNomeContato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cadastro_nome"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewEmailContato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cadastro_email" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include layout="@layout/divisor"/>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package santos.williankaminski.chat.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import santos.williankaminski.chat.R;
+import santos.williankaminski.chat.activity.ChatActivity;
 import santos.williankaminski.chat.adapter.ContatosAdaper;
 import santos.williankaminski.chat.config.FirebaseConf;
 import santos.williankaminski.chat.model.User;
@@ -75,7 +77,8 @@ public class ContatosFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-
+                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override
